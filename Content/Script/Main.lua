@@ -4,4 +4,7 @@
 --- DateTime: 2023/11/17 16:53
 ---
 
-print("Hello UnLua")
+_G.Class = require("Utils.Class")
+_G.Handler = require("Utils.Handler")
+
+_G.EventSystem = require("Utils.Event")()
