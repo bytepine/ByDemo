@@ -5,6 +5,16 @@
 ---
 
 ---@class RoleSystem
-local RoleSystem = {}
+local RoleSystem = {
+    _Managers = {}
+}
+
+function RoleSystem:RegisterManager(Name, Manager)
+    self._Managers[Name] = Manager
+end
+
+function RoleSystem:GetManager(Name)
+    return self._Managers[Name]
+end
 
 return RoleSystem

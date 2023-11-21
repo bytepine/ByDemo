@@ -4,7 +4,16 @@
 --- DateTime: 2023/11/17 16:53
 ---
 
-_G.Class = require("Utils.Class")
-_G.Handler = require("Utils.Handler")
+_G.Class = require("Util.Class")
+_G.Handler = require("Util.Handler")
+_G.Manager = require("Util.Manager")
 
-_G.EventSystem = require("Utils.Event")()
+_G.EventSystem = require("System.EventSystem")
+_G.NetworkSystem = require("System.NetworkSystem")
+_G.RoleSystem = require("System.RoleSystem")
+
+_G.Define = require("Define")
+
+for i, v in pairs(_G) do
+    print(i, v)
+end

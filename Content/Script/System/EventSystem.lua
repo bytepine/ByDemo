@@ -7,19 +7,17 @@
 local Handler = Handler
 local pairs = pairs
 
----@class Event : Class
-local Event = Class()
-
-function Event:Ctor()
-    self._EventDict = {}
-end
+---@class EventSystem
+local EventSystem = {
+    _EventDict = {}
+}
 
 ---Register
 ---注册事件
 ---@param EventName string
 ---@param Object table
 ---@param Function function
-function Event:Register(EventName, Object, Function, ...)
+function EventSystem:Register(EventName, Object, Function, ...)
     local EventDict = self._EventDict[Object]
     if not EventDict then
         EventDict = {}
@@ -37,7 +35,7 @@ end
 ---@param EventName string
 ---@param Object table
 ---@param Function function
-function Event:UnRegister(EventName, Object, Function)
+function EventSystem:UnRegister(EventName, Object, Function)
     local EventDict = self._EventDict[Object]
     if EventDict then
         local HandlerDict = EventDict[EventName]
@@ -53,13 +51,13 @@ end
 
 ---UnRegisterWithObject
 ---@param Object table
-function Event:UnRegisterWithObject(Object)
+function EventSystem:UnRegisterWithObject(Object)
     self._EventDict[Object] = nil
 end
 
 ---Broadcast
 ---@param EventName string
-function Event:Broadcast(EventName, ...)
+function EventSystem:Broadcast(EventName, ...)
     local EventDict = self._EventDict[EventName]
     if EventDict then
         for _, HandlerDict in pairs(EventDict) do
@@ -70,4 +68,4 @@ function Event:Broadcast(EventName, ...)
     end
 end
 
-return Event
+return EventSystem
