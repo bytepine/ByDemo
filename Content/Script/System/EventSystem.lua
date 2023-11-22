@@ -9,7 +9,8 @@ local pairs = pairs
 
 ---@class EventSystem
 local EventSystem = {
-    _EventDict = {}
+    _EventDict = {},
+    _NamesDict = {}
 }
 
 ---Register
@@ -18,17 +19,24 @@ local EventSystem = {
 ---@param Object table
 ---@param Function function
 function EventSystem:Register(EventName, Object, Function, ...)
-    local EventDict = self._EventDict[Object]
-    if not EventDict then
-        EventDict = {}
-        self._EventDict[EventName] = EventDict
+    local ObjectDict = self._EventDict[EventName]
+    if not ObjectDict then
+        ObjectDict = {}
+        self._EventDict[EventName] = ObjectDict
     end
-    local HandlerDict = EventDict[EventName]
+    local HandlerDict = ObjectDict[Object]
     if not HandlerDict then
         HandlerDict = {}
-        EventDict[EventName] = HandlerDict
+        ObjectDict[Object] = HandlerDict
     end
     HandlerDict[Function] = Handler(Object, Function, ...)
+
+    local NameDict = self._NamesDict[Object]
+    if not NameDict then
+        NameDict = {}
+        self._NamesDict[Object] = NameDict
+    end
+    NameDict[EventName] = Object
 end
 
 ---UnRegister
@@ -36,23 +44,28 @@ end
 ---@param Object table
 ---@param Function function
 function EventSystem:UnRegister(EventName, Object, Function)
-    local EventDict = self._EventDict[Object]
-    if EventDict then
-        local HandlerDict = EventDict[EventName]
+    local ObjectDict = self._EventDict[EventName]
+    if ObjectDict then
+        local NameDict = self._NamesDict[Object]
+        if NameDict then
+            NameDict[EventName] = nil
+        end
+        local HandlerDict = ObjectDict[Object]
         if HandlerDict then
             HandlerDict[Function] = nil
-        else
-            EventDict[EventName] = nil
         end
-    else
-        self._EventDict = {}
     end
 end
 
 ---UnRegisterWithObject
 ---@param Object table
 function EventSystem:UnRegisterWithObject(Object)
-    self._EventDict[Object] = nil
+    local NameDict = self._NamesDict[Object]
+    if NameDict then
+        for EventName, _ in pairs(NameDict) do
+            self:UnRegister(EventName, Object)
+        end
+    end
 end
 
 ---Broadcast
