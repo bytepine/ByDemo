@@ -6,23 +6,28 @@
 
 local Handler = Handler
 local pairs = pairs
+local next = next
 
 ---@class EventSystem
 local EventSystem = {
-    _EventDict = {},
-    _NamesDict = {}
+    _EventMap = {},
+    _ObjectMap = {}
 }
 
 ---Register
 ---注册事件
----@param EventName string
+---@param EventKey number
 ---@param Object table
 ---@param Function function
-function EventSystem:Register(EventName, Object, Function, ...)
-    local ObjectDict = self._EventDict[EventName]
+function EventSystem:Register(EventKey, Object, Function, ...)
+    if not EventKey or not Object or not Function then
+        return
+    end
+
+    local ObjectDict = self._EventMap[EventKey]
     if not ObjectDict then
         ObjectDict = {}
-        self._EventDict[EventName] = ObjectDict
+        self._EventMap[EventKey] = ObjectDict
     end
     local HandlerDict = ObjectDict[Object]
     if not HandlerDict then
@@ -31,28 +36,48 @@ function EventSystem:Register(EventName, Object, Function, ...)
     end
     HandlerDict[Function] = Handler(Object, Function, ...)
 
-    local NameDict = self._NamesDict[Object]
-    if not NameDict then
-        NameDict = {}
-        self._NamesDict[Object] = NameDict
+    local KeyDict = self._ObjectMap[Object]
+    if not KeyDict then
+        KeyDict = {}
+        self._ObjectMap[Object] = KeyDict
     end
-    NameDict[EventName] = Object
+    KeyDict[EventKey] = Object
 end
 
 ---UnRegister
----@param EventName string
+---@param EventKey number
 ---@param Object table
 ---@param Function function
-function EventSystem:UnRegister(EventName, Object, Function)
-    local ObjectDict = self._EventDict[EventName]
+function EventSystem:UnRegister(EventKey, Object, Function)
+    if not EventKey or not Object then
+        return
+    end
+
+    local Clear = false
+    local ObjectDict = self._EventMap[EventKey]
     if ObjectDict then
-        local NameDict = self._NamesDict[Object]
-        if NameDict then
-            NameDict[EventName] = nil
+        if Function then
+            local HandlerDict = ObjectDict[Object]
+            if HandlerDict then
+                HandlerDict[Function] = nil
+            end
+            if not next(HandlerDict) then
+                Clear = true
+            end
+        else
+            Clear = true
         end
-        local HandlerDict = ObjectDict[Object]
-        if HandlerDict then
-            HandlerDict[Function] = nil
+
+        ObjectDict[Object] = nil
+        if not next(ObjectDict[Object]) then
+            self._EventMap[EventKey] = nil
+        end
+        local KeyDict = self._ObjectMap[Object]
+        if KeyDict then
+            KeyDict[EventKey] = nil
+            if not next(KeyDict) then
+                self._ObjectMap[Object] = nil
+            end
         end
     end
 end
@@ -60,18 +85,18 @@ end
 ---UnRegisterWithObject
 ---@param Object table
 function EventSystem:UnRegisterWithObject(Object)
-    local NameDict = self._NamesDict[Object]
-    if NameDict then
-        for EventName, _ in pairs(NameDict) do
-            self:UnRegister(EventName, Object)
+    local KeyDict = self._ObjectMap[Object]
+    if KeyDict then
+        for EventKey, _ in pairs(KeyDict) do
+            self:UnRegister(EventKey, Object)
         end
     end
 end
 
 ---Broadcast
----@param EventName string
-function EventSystem:Broadcast(EventName, ...)
-    local EventDict = self._EventDict[EventName]
+---@param EventKey number
+function EventSystem:Broadcast(EventKey, ...)
+    local EventDict = self._EventMap[EventKey]
     if EventDict then
         for _, HandlerDict in pairs(EventDict) do
             for _, HandlerObject in pairs(HandlerDict) do
