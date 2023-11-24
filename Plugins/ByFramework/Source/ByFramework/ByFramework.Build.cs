@@ -38,7 +38,9 @@ public class ByFramework : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
-				"UMG",
+				"UMG", 
+				"Lua",
+				"UnLua",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

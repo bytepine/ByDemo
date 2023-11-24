@@ -8,12 +8,4 @@ _G.Class = require("Util.Class")
 _G.Handler = require("Util.Handler")
 _G.Manager = require("Util.Manager")
 
-_G.EventSystem = require("System.EventSystem")
-_G.NetworkSystem = require("System.NetworkSystem")
-_G.RoleSystem = require("System.RoleSystem")
-
-_G.Define = require("Define")
-
-for i, v in pairs(_G) do
-    print(i, v)
-end
+_G.Env = require("Env")

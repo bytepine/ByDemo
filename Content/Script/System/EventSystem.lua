@@ -96,6 +96,7 @@ end
 ---Broadcast
 ---@param EventKey number
 function EventSystem:Broadcast(EventKey, ...)
+    print("EventSystem:Broadcast", EventKey)
     local EventDict = self._EventMap[EventKey]
     if EventDict then
         for _, HandlerDict in pairs(EventDict) do
