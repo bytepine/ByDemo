@@ -15,8 +15,21 @@ class BYFRAMEWORK_API ULuaSubsystem : public UGameInstanceSubsystem
 	GENERATED_BODY()
 
 public:
+	/** Implement this for initialization of instances of the system */
+	virtual void Initialize(FSubsystemCollectionBase& Collection);
+
+	/** Implement this for deinitialization of instances of the system */
+	virtual void Deinitialize();
+	
+	/**
+	 * 
+	 * @tparam T 类型
+	 * @param SystemName 表名
+	 * @param FuncName 方法名
+	 * @param Args 参数列表
+	 */
 	template <typename... T>
-	void CallEnv(const char* TableName, const char* FuncName, T&&... Args);
+	void CallSystem(const char* SystemName, const char* FuncName, T&&... Args);
 	
 	/**
 	 * 广播事件
@@ -41,4 +54,9 @@ public:
 	 * @param PanelKey 面板Key
 	 */
 	void ClosePanel(int32 PanelKey);
+
+private:
+	void OnPostWorldInitialization(UWorld* World, const UWorld::InitializationValues IVS);
+
+	FDelegateHandle PostWorldInitializationHandle;
 };

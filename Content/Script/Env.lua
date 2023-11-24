@@ -11,6 +11,17 @@ local Env = {
     NetworkSystem = require("System.NetworkSystem"),
     RoleSystem = require("System.RoleSystem"),
     PanelSystem = require("System.PanelSystem"),
+    WorldSystem = require("System.WorldSystem")
+}
+
+Env.Systems = {
+    "EventSystem",
+    "LoginSystem",
+    "TimeSystem",
+    "NetworkSystem",
+    "RoleSystem",
+    "PanelSystem",
+    "WorldSystem",
 }
 
 Env.Managers = {

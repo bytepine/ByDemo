@@ -25,7 +25,6 @@ public class ByFramework : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core",
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
@@ -38,6 +37,7 @@ public class ByFramework : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
+				"Core",
 				"UMG", 
 				"Lua",
 				"UnLua",

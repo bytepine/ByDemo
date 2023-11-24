@@ -10,6 +10,10 @@ local PanelSystem = {
     _PanelStack = {}
 }
 
+function PanelSystem:EnterWorld(WorldName)
+    print("PanelSystem:EnterWorld", WorldName)
+end
+
 function PanelSystem:OpenPanel(PanelKey, ...)
 
 end
