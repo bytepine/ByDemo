@@ -6,10 +6,12 @@
 
 local Enum = {
     PanelEnum = {
-        Main = 1
+        Main = 1,
+        Login = 2,
     },
     JumpPanelEnum = {
-        Main = 1
+        Main = 1,
+        Login = 2,
     }
 }
 

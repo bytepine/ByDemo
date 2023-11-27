@@ -8,6 +8,9 @@
 local PanelTable = {
     [1] = {
         Blueprint = "Class'/Game/UMG/Main/Panel_Main.Panel_Main_C'"
+    },
+    [2] = {
+        Blueprint = "Class'/Game/UMG/Login/Panel_Login.Panel_Login_C'"
     }
 }
 

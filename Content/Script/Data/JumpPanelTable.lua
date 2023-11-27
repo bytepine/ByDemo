@@ -8,6 +8,10 @@ local JumpPanelTable = {
     [1] = {
         PanelKey = 1,
         Params = {1, 2, 3}
+    },
+    [2] = {
+        PanelKey = 2,
+        Params = {}
     }
 }
 

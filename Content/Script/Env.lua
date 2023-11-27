@@ -4,17 +4,7 @@
 --- DateTime: 2023/11/21 20:19
 ---
 
-local Env = {
-    EventSystem = require("System.EventSystem"),
-    LoginSystem = require("System.LoginSystem"),
-    TimeSystem = require("System.TimeSystem"),
-    NetworkSystem = require("System.NetworkSystem"),
-    RoleSystem = require("System.RoleSystem"),
-    PanelSystem = require("System.PanelSystem"),
-    WorldSystem = require("System.WorldSystem")
-}
-
-Env.Systems = {
+local Systems = {
     "EventSystem",
     "LoginSystem",
     "TimeSystem",
@@ -24,8 +14,18 @@ Env.Systems = {
     "WorldSystem",
 }
 
-Env.Managers = {
+local Managers = {
     "BagManager",
 }
+
+
+local Env = {}
+
+for _, SystemKey in ipairs(Systems) do
+    Env[SystemKey] = require("System."..SystemKey)
+end
+for _, ManagerKey in ipairs(Managers) do
+    require("Manager."..ManagerKey)
+end
 
 return Env

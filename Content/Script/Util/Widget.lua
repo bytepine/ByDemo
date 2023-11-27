@@ -7,13 +7,9 @@
 ---@type UByUserWidget
 local Widget = UnLua.Class()
 
-function Widget:OnOpen(...)
+function Widget:OnOpen(...) end
 
-end
-
-function Widget:OnUpdate(...)
-
-end
+function Widget:OnUpdate(...) end
 
 function Widget:Close()
 
