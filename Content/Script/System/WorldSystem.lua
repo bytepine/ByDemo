@@ -6,8 +6,8 @@
 
 local PanelSystem = require("System.PanelSystem")
 
----@class WorldSystem
-local WorldSystem = {}
+---@class WorldSystem : System
+local WorldSystem = System()
 
 ---OnPostWorldInitialization
 ---@param World UWorld

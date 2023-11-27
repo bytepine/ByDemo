@@ -4,6 +4,8 @@
 --- DateTime: 2023/11/24 11:12
 ---
 
+local PanelSystem = require("System.PanelSystem")
+
 ---@type UByUserWidget
 local Widget = UnLua.Class()
 
@@ -13,6 +15,14 @@ function Widget:OnUpdate(...) end
 
 function Widget:Close()
 
+end
+
+function Widget:OpenPanel(PanelKey, ...)
+    PanelSystem:OpenPanel(PanelKey, ...)
+end
+
+function Widget:ClosePanel(PanelKey)
+    PanelSystem:ClosePanel(PanelKey)
 end
 
 return Widget

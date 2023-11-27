@@ -11,11 +11,13 @@ local JumpPanelEnum = Enum.JumpPanelEnum
 
 local table_unpack = table.unpack
 
----@class PanelSystem
-local PanelSystem = {
-    _PanelDict = {},
-    _PanelStack = {}
-}
+---@class PanelSystem : System
+local PanelSystem = System()
+
+function PanelSystem:Initialize()
+    self._PanelDict = {}
+    self._PanelStack = {}
+end
 
 function PanelSystem:EnterWorld(WorldName)
     self:CloseAll()

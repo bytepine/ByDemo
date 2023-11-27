@@ -17,21 +17,54 @@ class BYFRAMEWORK_API ULuaSubsystem : public UGameInstanceSubsystem
 
 public:
 	/**
-	 * 
+	 * 调用System方法
 	 * @tparam T 类型
 	 * @param SystemName 表名
 	 * @param FuncName 方法名
 	 * @param Args 参数列表
 	 */
 	template <typename... T>
-	void CallSystem(const char* SystemName, const char* FuncName, T&&... Args)
+	void CallSystemFunction(const char* SystemName, const char* FuncName, T&&... Args)
 	{
 		lua_State* L = UnLua::GetState();
 		if (lua_getglobal(L, "Env") == LUA_TTABLE)
 		{
-			lua_getfield(L, -1, SystemName);
-			UnLua::FLuaTable EventSystem(L, -1);
-			EventSystem.Call(FuncName, EventSystem, Forward<T>(Args)...);
+			if (lua_getfield(L, -1, "Systems") == LUA_TTABLE)
+			{
+				if (lua_getfield(L, -1, SystemName) == LUA_TTABLE)
+				{
+					UnLua::FLuaTable EventSystem(L, -1);
+					EventSystem.Call(FuncName, EventSystem, Forward<T>(Args)...);
+				}
+				lua_pop(L, 1);
+			}
+			lua_pop(L, 1);
+		}
+		lua_pop(L, 1);
+	}
+
+	/**
+	 * 调用Manager方法
+	 * @tparam T 类型
+	 * @param ManagerName 表名
+	 * @param FuncName 方法名
+	 * @param Args 参数列表
+	 */
+	template <typename... T>
+	void CallManagerFunction(const char* ManagerName, const char* FuncName, T&&... Args)
+	{
+		lua_State* L = UnLua::GetState();
+		if (lua_getglobal(L, "Env") == LUA_TTABLE)
+		{
+			if (lua_getfield(L, -1, "Managers") == LUA_TTABLE)
+			{
+				if (lua_getfield(L, -1, ManagerName))
+				{
+					UnLua::FLuaTable EventSystem(L, -1);
+					EventSystem.Call(FuncName, EventSystem, Forward<T>(Args)...);
+				}
+				lua_pop(L, 1);
+			}
 			lua_pop(L, 1);
 		}
 		lua_pop(L, 1);
@@ -46,6 +79,6 @@ public:
 	template <typename... T>
 	void BroadcastEvent(int32 EventKey, T&&... Args)
 	{
-		CallSystem("EventSystem", "Broadcast", EventKey, Forward<T>(Args)...);
+		CallSystemFunction("EventSystem", "Broadcast", EventKey, Forward<T>(Args)...);
 	}
 };

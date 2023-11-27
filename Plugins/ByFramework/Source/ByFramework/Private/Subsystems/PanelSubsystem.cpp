@@ -7,7 +7,7 @@ void UPanelSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 {
 	Super::OnWorldBeginPlay(InWorld);
 	
-	GetLuaSubsystem()->CallSystem("WorldSystem", "OnWorldBeginPlay", &InWorld, InWorld.GetName());
+	GetLuaSubsystem()->CallSystemFunction("WorldSystem", "OnWorldBeginPlay", &InWorld, InWorld.GetName());
 }
 
 ULuaSubsystem* UPanelSubsystem::GetLuaSubsystem()

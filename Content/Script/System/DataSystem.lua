@@ -4,7 +4,7 @@
 --- DateTime: 2023/11/24 11:42
 ---
 
----@class DataSystem
-local DataSystem = {}
+---@class DataSystem : System
+local DataSystem = System()
 
 return DataSystem

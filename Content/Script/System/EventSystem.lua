@@ -8,11 +8,13 @@ local Handler = Handler
 local pairs = pairs
 local next = next
 
----@class EventSystem
-local EventSystem = {
-    _EventMap = {},
-    _ObjectMap = {}
-}
+---@class EventSystem : System
+local EventSystem = System()
+
+function EventSystem:Initialize()
+    self._EventMap = {}
+    self._ObjectMap = {}
+end
 
 ---Register
 ---注册事件

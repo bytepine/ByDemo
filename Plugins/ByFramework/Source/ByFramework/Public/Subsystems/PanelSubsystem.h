@@ -32,7 +32,7 @@ public:
 	template <typename... T>
 	void OpenPanel(int32 PanelKey, T&&... Args)
 	{
-		GetLuaSubsystem()->CallSystem("PanelSystem", "OpenPanel", PanelKey, Forward<T>(Args)...);
+		GetLuaSubsystem()->CallSystemFunction("PanelSystem", "OpenPanel", PanelKey, Forward<T>(Args)...);
 	}
 
 	/**
@@ -41,6 +41,6 @@ public:
  */
 	void ClosePanel(int32 PanelKey)
 	{
-		GetLuaSubsystem()->CallSystem("PanelSystem", "ClosePanel", PanelKey);
+		GetLuaSubsystem()->CallSystemFunction("PanelSystem", "ClosePanel", PanelKey);
 	}
 };

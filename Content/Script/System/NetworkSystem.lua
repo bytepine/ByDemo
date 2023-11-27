@@ -4,7 +4,7 @@
 --- DateTime: 2023/11/21 14:52
 ---
 
----@class NetworkSystem
-local NetworkSystem = {}
+---@class NetworkSystem : System
+local NetworkSystem = System()
 
 return NetworkSystem

@@ -4,7 +4,7 @@
 --- DateTime: 2023/11/21 14:50
 ---
 
----@class LoginSystem
-local LoginSystem = {}
+---@class LoginSystem : System
+local LoginSystem = System()
 
 return LoginSystem

@@ -8,6 +8,10 @@
 local Panel_Login_C = UnLua.Class("Util.Widget")
 
 function Panel_Login_C:Construct()
+    self.Button_Login.OnClicked:Add(self, self.OnLogin)
+end
+
+function Panel_Login_C:OnLogin()
 
 end
 

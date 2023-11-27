@@ -4,10 +4,12 @@
 --- DateTime: 2023/11/21 14:49
 ---
 
----@class RoleSystem
-local RoleSystem = {
-    _Managers = {}
-}
+---@class RoleSystem : System
+local RoleSystem = System()
+
+function RoleSystem:Initialize()
+    self._Managers = {}
+end
 
 function RoleSystem:RegisterManager(Name, Manager)
     self._Managers[Name] = Manager

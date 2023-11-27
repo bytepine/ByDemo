@@ -4,28 +4,40 @@
 --- DateTime: 2023/11/21 20:19
 ---
 
-local Systems = {
+local SystemKeys = {
+    "DataSystem",
     "EventSystem",
     "LoginSystem",
-    "TimeSystem",
     "NetworkSystem",
-    "RoleSystem",
     "PanelSystem",
+    "RoleSystem",
+    "TimeSystem",
     "WorldSystem",
 }
 
-local Managers = {
+local ManagerKeys = {
     "BagManager",
 }
 
+local Env = {
+    Systems = {},
+    Managers = {},
+}
 
-local Env = {}
-
-for _, SystemKey in ipairs(Systems) do
-    Env[SystemKey] = require("System."..SystemKey)
+for _, SystemKey in ipairs(SystemKeys) do
+    local System = require("System."..SystemKey)
+    if System.Initialize then
+        System:Initialize()
+    end
+    Env.Systems[SystemKey] = System
 end
-for _, ManagerKey in ipairs(Managers) do
-    require("Manager."..ManagerKey)
+
+for _, ManagerKey in ipairs(ManagerKeys) do
+    local Manager = require("Manager."..ManagerKey)
+    if Manager.Initialize then
+        Manager:Initialize()
+    end
+    Env.Managers[ManagerKey] = Manager
 end
 
 return Env

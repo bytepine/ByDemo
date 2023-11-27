@@ -4,6 +4,7 @@
 --- DateTime: 2023/11/21 20:14
 ---
 
-local BagManager = Manager("BagManager")
+---@class BagManager : Manager
+local BagManager = Manager()
 
 return BagManager
