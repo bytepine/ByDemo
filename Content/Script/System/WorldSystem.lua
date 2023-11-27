@@ -9,7 +9,11 @@ local PanelSystem = require("System.PanelSystem")
 ---@class WorldSystem
 local WorldSystem = {}
 
-function WorldSystem:OnPostWorldInitialization(WorldName)
+---OnPostWorldInitialization
+---@param World UWorld
+function WorldSystem:OnWorldBeginPlay(World, WorldName)
+    _G.World = World
+
     PanelSystem:EnterWorld(WorldName)
 end
 

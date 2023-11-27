@@ -8,15 +8,11 @@
 local Panel_Main = UnLua.Class("Util.Widget")
 
 function Panel_Main:Construct()
-
+    print("Panel_Main:Construct()")
 end
 
 function Panel_Main:OnOpen()
-
-end
-
-function Panel_Main:OnClose()
-
+    print("Panel_Main:OnOpen()")
 end
 
 return Panel_Main

@@ -3,9 +3,10 @@
 --- Created by byteyang.
 --- DateTime: 2023/11/17 16:53
 ---
-
 _G.Class = require("Util.Class")
 _G.Handler = require("Util.Handler")
 _G.Manager = require("Util.Manager")
+
+_G.Enum = require("Data.Enum")
 
 _G.Env = require("Env")

@@ -15,10 +15,6 @@ function Widget:OnUpdate(...)
 
 end
 
-function Widget:OnClose()
-
-end
-
 function Widget:Close()
 
 end

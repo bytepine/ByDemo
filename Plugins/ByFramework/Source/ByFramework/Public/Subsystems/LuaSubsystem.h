@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "UnLuaLegacy.h"
 #include "LuaSubsystem.generated.h"
 
 /**
@@ -15,12 +16,6 @@ class BYFRAMEWORK_API ULuaSubsystem : public UGameInstanceSubsystem
 	GENERATED_BODY()
 
 public:
-	/** Implement this for initialization of instances of the system */
-	virtual void Initialize(FSubsystemCollectionBase& Collection);
-
-	/** Implement this for deinitialization of instances of the system */
-	virtual void Deinitialize();
-	
 	/**
 	 * 
 	 * @tparam T 类型
@@ -29,7 +24,18 @@ public:
 	 * @param Args 参数列表
 	 */
 	template <typename... T>
-	void CallSystem(const char* SystemName, const char* FuncName, T&&... Args);
+	void CallSystem(const char* SystemName, const char* FuncName, T&&... Args)
+	{
+		lua_State* L = UnLua::GetState();
+		if (lua_getglobal(L, "Env") == LUA_TTABLE)
+		{
+			lua_getfield(L, -1, SystemName);
+			UnLua::FLuaTable EventSystem(L, -1);
+			EventSystem.Call(FuncName, EventSystem, Forward<T>(Args)...);
+			lua_pop(L, 1);
+		}
+		lua_pop(L, 1);
+	}
 	
 	/**
 	 * 广播事件
@@ -38,25 +44,8 @@ public:
 	 * @param Args 参数列表
 	 */
 	template <typename... T>
-	void BroadcastEvent(int32 EventKey, T&&... Args);
-	
-	/**
-	 * 打开面板
-	 * @tparam T 类型
-	 * @param PanelKey 事件Key
-	 * @param Args 参数列表
-	 */
-	template <typename... T>
-	void OpenPanel(int32 PanelKey, T&&... Args);
-
-	/**
-	 * 关闭面板
-	 * @param PanelKey 面板Key
-	 */
-	void ClosePanel(int32 PanelKey);
-
-private:
-	void OnPostWorldInitialization(UWorld* World, const UWorld::InitializationValues IVS);
-
-	FDelegateHandle PostWorldInitializationHandle;
+	void BroadcastEvent(int32 EventKey, T&&... Args)
+	{
+		CallSystem("EventSystem", "Broadcast", EventKey, Forward<T>(Args)...);
+	}
 };

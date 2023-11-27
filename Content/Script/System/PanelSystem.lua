@@ -4,6 +4,13 @@
 --- DateTime: 2023/11/24 11:02
 ---
 
+local PanelTable = require("Data.PanelTable")
+local JumpPanelTable = require("Data.JumpPanelTable")
+
+local JumpPanelEnum = Enum.JumpPanelEnum
+
+local table_unpack = table.unpack
+
 ---@class PanelSystem
 local PanelSystem = {
     _PanelDict = {},
@@ -11,19 +18,62 @@ local PanelSystem = {
 }
 
 function PanelSystem:EnterWorld(WorldName)
-    print("PanelSystem:EnterWorld", WorldName)
+    self:CloseAll()
+    self:JumpPanel(JumpPanelEnum[WorldName])
+end
+
+function PanelSystem:JumpPanel(JumpPanelKey)
+    if not JumpPanelKey then
+        return
+    end
+
+    local JumpPanelData = JumpPanelTable[JumpPanelKey]
+    if not JumpPanelData then
+        return
+    end
+
+    self:OpenPanel(JumpPanelData.PanelKey, table_unpack(JumpPanelData.Params))
 end
 
 function PanelSystem:OpenPanel(PanelKey, ...)
+    local PanelData = PanelTable[PanelKey]
+    if not PanelData then
+        return
+    end
 
+    ---@type UByUserWidget
+    local PanelObject = self._PanelDict[PanelKey]
+
+    if not PanelObject then
+        local PanelClass = UE.LoadClass(PanelData.Blueprint)
+        PanelObject = UE.UWidgetBlueprintLibrary.Create(World, PanelClass)
+        PanelObject:AddToViewport()
+        self._PanelDict[PanelKey] = PanelObject
+
+        if PanelObject.OnOpen then
+            PanelObject:OnOpen(...)
+        end
+    else
+        if PanelObject.OnUpdate then
+            PanelObject:OnUpdate(...)
+        end
+    end
 end
 
-function PanelSystem:ClosePanel(PaneKey)
-
+function PanelSystem:ClosePanel(PanelKey)
+    ---@type UByUserWidget
+    local PanelObject = self._PanelDict[PanelKey]
+    if PanelObject then
+        PanelObject:RemoveFromViewport()
+    end
 end
 
 function PanelSystem:CloseAll()
-
+    ---@param PanelObject UByUserWidget
+    for _, PanelObject in pairs(self._PanelDict) do
+        PanelObject:RemoveFromViewport()
+    end
+    self._PanelDict = {}
 end
 
 return PanelSystem
