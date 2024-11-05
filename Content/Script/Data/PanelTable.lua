@@ -7,11 +7,11 @@
 ---@class PanelTable
 local PanelTable = {
     [1] = {
-        Blueprint = "Class'/Game/UMG/Main/Panel_Main.Panel_Main_C'",
+        Blueprint = "Class'/Game/Demo/UMG/Main/Panel_Main.Panel_Main_C'",
         ZOrder = 0,
     },
     [2] = {
-        Blueprint = "Class'/Game/UMG/Login/Panel_Login.Panel_Login_C'",
+        Blueprint = "Class'/Game/Demo/UMG/Login/Panel_Login.Panel_Login_C'",
         ZOrder = 0,
     }
 }
