@@ -1,7 +1,9 @@
 ﻿#include "TimelineEditor.h"
 #include "AssetToolsModule.h"
-#include "AssetTypeActions_TimelineAsset.h"
 #include "IAssetTools.h"
+#include "TimelineAsset.h"
+#include "Asset/AssetTypeActions_TimelineAsset.h"
+#include "Asset/TimelineAssetEditor.h"
 
 #define LOCTEXT_NAMESPACE "FTimelineEditorModule"
 
@@ -63,6 +65,14 @@ void FTimelineEditorModule::UnregisterAssets()
     }
 
     RegisteredAssetActions.Empty();
+}
+
+TSharedRef<FTimelineAssetEditor> FTimelineEditorModule::CreateFlowAssetEditor(const EToolkitMode::Type Mode,
+	const TSharedPtr<IToolkitHost>& InitToolkitHost, UTimelineAsset* TimelineAsset)
+{
+	TSharedRef<FTimelineAssetEditor> NewTimelineAssetEditor(new FTimelineAssetEditor());
+	NewTimelineAssetEditor->InitTimelineAssetEditor(Mode, InitToolkitHost, TimelineAsset);
+	return NewTimelineAssetEditor;
 }
 
 #undef LOCTEXT_NAMESPACE

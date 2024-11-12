@@ -5,6 +5,9 @@
 #include "Modules/ModuleManager.h"
 #include "IAssetTypeActions.h"
 
+class FTimelineAssetEditor;
+class UTimelineAsset;
+
 class FTimelineEditorModule : public IModuleInterface
 {
 public:
@@ -20,4 +23,7 @@ private:
 public:
 private:
     TArray<TSharedRef<IAssetTypeActions>> RegisteredAssetActions;
+public:
+public:
+    static TSharedRef<FTimelineAssetEditor> CreateFlowAssetEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UTimelineAsset* TimelineAsset);
 };

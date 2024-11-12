@@ -1,6 +1,6 @@
 // Copyright Byteyang Games, Inc. All Rights Reserved.
 
-#include "AssetTypeActions_TimelineAsset.h"
+#include "Asset/AssetTypeActions_TimelineAsset.h"
 #include "TimelineEditor.h"
 #include "TimelineAsset.h"
 
@@ -29,7 +29,16 @@ FColor FAssetTypeActions_TimelineAsset::GetTypeColor() const
 void FAssetTypeActions_TimelineAsset::OpenAssetEditor(const TArray<UObject*>& InObjects,
 	TSharedPtr<IToolkitHost> EditWithinLevelEditor)
 {
-	UE_LOG(LogBlueprint, Log, TEXT("FAssetTypeActions_TimelineAsset::OpenAssetEditor"));
+	const EToolkitMode::Type Mode = EditWithinLevelEditor.IsValid() ? EToolkitMode::WorldCentric : EToolkitMode::Standalone;
+
+	for (auto ObjIt = InObjects.CreateConstIterator(); ObjIt; ++ObjIt)
+	{
+		if (UTimelineAsset* TimelineAsset = Cast<UTimelineAsset>(*ObjIt))
+		{
+			const FTimelineEditorModule* TimelineEditorModule = &FModuleManager::LoadModuleChecked<FTimelineEditorModule>("TimelineEditor");
+			TimelineEditorModule->CreateFlowAssetEditor(Mode, EditWithinLevelEditor, TimelineAsset);
+		}
+	}
 }
 
 void FAssetTypeActions_TimelineAsset::PerformAssetDiff(UObject* OldAsset, UObject* NewAsset,
