@@ -19,7 +19,10 @@ public class TimelineEditor : ModuleRules
                 "CoreUObject",
                 "Engine",
                 "Slate",
-                "SlateCore"
+                "SlateCore",
+                "Timeline",
+                "AssetTools",
+                "UnrealEd",
             }
         );
     }

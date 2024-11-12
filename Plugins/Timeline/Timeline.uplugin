@@ -22,7 +22,7 @@
 		{
 			"Name": "TimelineEditor",
 			"Type": "Editor",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "PreDefault"
 		}
 	]
 }

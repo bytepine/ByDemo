@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS(BlueprintType)
+UCLASS(BlueprintType, hideCategories = Object)
 class TIMELINE_API UTimelineAsset : public UObject
 {
 	GENERATED_BODY()
