@@ -208,7 +208,12 @@ namespace UnLua
         static int32 Invoke(lua_State *L, const TFunction<RetType(ArgType...)> &Func, TTuple<typename TArgTypeTraits<ArgType>::Type...> &Args, TIndices<N...> ParamIndices)
         {
             int32 Num = 0;
+#if ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 3
+            std::remove_const_t<RetType> *RetValPtr = lua_gettop(L) > sizeof...(ArgType) ? UnLua::Get(L, sizeof...(ArgType) + 1, TType<std::remove_const_t<RetType>*>()) : nullptr;
+#elif
             typename TRemoveConst<RetType>::Type *RetValPtr = lua_gettop(L) > sizeof...(ArgType) ? UnLua::Get(L, sizeof...(ArgType) + 1, TType<typename TRemoveConst<RetType>::Type*>()) : nullptr;
+#endif
+            
             if (RetValPtr)
             {
                 *RetValPtr = UnLua::Invoke(Func, Args, typename TZeroBasedIndices<sizeof...(ArgType)>::Type());

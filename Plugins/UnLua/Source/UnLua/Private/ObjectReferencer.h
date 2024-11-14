@@ -58,7 +58,11 @@ namespace UnLua
         }
 
     private:
+#if ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 3
+        TSet<TObjectPtr<UObject>> ReferencedObjects;
+#else
         TSet<UObject*> ReferencedObjects;
+#endif
         FString Name = TEXT("FObjectReferencer");
     };
 }
