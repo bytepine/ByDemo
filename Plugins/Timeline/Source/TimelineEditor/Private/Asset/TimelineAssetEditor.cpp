@@ -32,7 +32,7 @@ void FTimelineAssetEditor::InitTimelineAssetEditor(const EToolkitMode::Type Mode
 	CreateToolbar();
 	CreateWidgets();
 	
-	const TSharedRef<FTabManager::FLayout> StandaloneDefaultLayout = FTabManager::NewLayout("TimelineAssetEditor_Layout_v5.4")
+	const TSharedRef<FTabManager::FLayout> StandaloneDefaultLayout = FTabManager::NewLayout("TimelineAssetEditor_Layout_v1")
 	->AddArea
 	(
 		FTabManager::NewPrimaryArea()->SetOrientation(Orient_Horizontal)
