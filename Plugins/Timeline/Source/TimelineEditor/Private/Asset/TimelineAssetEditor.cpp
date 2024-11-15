@@ -4,7 +4,9 @@
 
 #define LOCTEXT_NAMESPACE "TimelineAssetEditor"
 
-const FName FTimelineAssetEditor::DetailsTab(TEXT("Details"));
+const FName FTimelineAssetEditor::GraphTab(TEXT("Graph"));
+const FName FTimelineAssetEditor::AssetDetailsTab(TEXT("AssetDetails"));
+const FName FTimelineAssetEditor::TrackDetailsTab(TEXT("TrackDetails"));
 
 FTimelineAssetEditor::FTimelineAssetEditor()
 	: TimelineAsset(nullptr)
@@ -30,22 +32,40 @@ void FTimelineAssetEditor::InitTimelineAssetEditor(const EToolkitMode::Type Mode
 	CreateToolbar();
 	CreateWidgets();
 	
-	const TSharedRef<FTabManager::FLayout> StandaloneDefaultLayout = FTabManager::NewLayout("TimelineAssetEditor_Layout")
+	const TSharedRef<FTabManager::FLayout> StandaloneDefaultLayout = FTabManager::NewLayout("TimelineAssetEditor_Layout_v5.4")
 	->AddArea
 	(
 		FTabManager::NewPrimaryArea()->SetOrientation(Orient_Horizontal)
 		->Split
 		(
 			FTabManager::NewStack()
-			->SetSizeCoefficient(0.225f)
-			->AddTab(DetailsTab, ETabState::OpenedTab)
+			->SetSizeCoefficient(0.15f)
+			->AddTab(AssetDetailsTab, ETabState::OpenedTab)
+		)
+		->Split
+		(
+			FTabManager::NewSplitter()
+			->SetSizeCoefficient(0.7)
+			->SetOrientation(Orient_Vertical)
+			->Split
+			(
+				FTabManager::NewStack()
+				->SetSizeCoefficient(1.0)
+				->SetHideTabWell(true)
+				->AddTab(GraphTab, ETabState::OpenedTab)
+			)
+		)
+		->Split
+		(
+			FTabManager::NewStack()
+			->SetSizeCoefficient(0.15f)
+			->AddTab(TrackDetailsTab, ETabState::OpenedTab)
 		)
 	);
 	
 	constexpr bool bCreateDefaultStandaloneMenu = true;
 	constexpr bool bCreateDefaultToolbar = true;
-	const FName AppIdentifier = TEXT("TimelineEditor");
-	FAssetEditorToolkit::InitAssetEditor(Mode, InitToolkitHost, AppIdentifier, StandaloneDefaultLayout, bCreateDefaultStandaloneMenu, bCreateDefaultToolbar, ObjectToEdit, false);
+	FAssetEditorToolkit::InitAssetEditor(Mode, InitToolkitHost, TEXT("TimelineEditorApp"), StandaloneDefaultLayout, bCreateDefaultStandaloneMenu, bCreateDefaultToolbar, ObjectToEdit, false);
 
 	RegenerateMenusAndToolbars();
 }
@@ -82,18 +102,29 @@ void FTimelineAssetEditor::RegisterTabSpawners(const TSharedRef<class FTabManage
 	
 	FAssetEditorToolkit::RegisterTabSpawners(InTabManager);
 
-	InTabManager->RegisterTabSpawner(DetailsTab, FOnSpawnTab::CreateSP(this, &FTimelineAssetEditor::SpawnTab_Details))
-			.SetDisplayName(LOCTEXT("DetailsTab", "Details"))
+	InTabManager->RegisterTabSpawner(GraphTab, FOnSpawnTab::CreateSP(this, &FTimelineAssetEditor::SpawnTab_Graph))
+			.SetDisplayName(LOCTEXT("Graph", "Graph"))
+			.SetGroup(WorkspaceMenuCategoryRef)
+			.SetIcon(FSlateIcon(FAppStyle::GetAppStyleSetName(), "GraphEditor.EventGraph_16x"));
+	
+	InTabManager->RegisterTabSpawner(AssetDetailsTab, FOnSpawnTab::CreateSP(this, &FTimelineAssetEditor::SpawnTab_AssetDetails))
+			.SetDisplayName(LOCTEXT("AssetDetails", "AssetDetails"))
 			.SetGroup(WorkspaceMenuCategoryRef)
 			.SetIcon(FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Tabs.Details"));
-	
+
+	InTabManager->RegisterTabSpawner(TrackDetailsTab, FOnSpawnTab::CreateSP(this, &FTimelineAssetEditor::SpawnTab_TrackDetails))
+			.SetDisplayName(LOCTEXT("TrackDetails", "TrackDetails"))
+			.SetGroup(WorkspaceMenuCategoryRef)
+			.SetIcon(FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Tabs.Details"));
 }
 
 void FTimelineAssetEditor::UnregisterTabSpawners(const TSharedRef<class FTabManager>& InTabManager)
 {
 	FAssetEditorToolkit::UnregisterTabSpawners(InTabManager);
 
-	InTabManager->UnregisterTabSpawner(DetailsTab);
+	InTabManager->UnregisterTabSpawner(GraphTab);
+	InTabManager->UnregisterTabSpawner(AssetDetailsTab);
+	InTabManager->UnregisterTabSpawner(TrackDetailsTab);
 }
 
 void FTimelineAssetEditor::InitToolMenuContext(FToolMenuContext& MenuContext)
@@ -128,20 +159,33 @@ void FTimelineAssetEditor::BindToolbarCommands()
 
 void FTimelineAssetEditor::CreateWidgets()
 {
-	// Details View
+	FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
+	
+	// AssetDetails View
 	{
-		FDetailsViewArgs Args;
-		Args.bHideSelectionTip = true;
-		Args.bShowPropertyMatrixButton = false;
-		Args.DefaultsOnlyVisibility = EEditDefaultsOnlyNodeVisibility::Hide;
-		Args.NotifyHook = this;
-
-		FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
-		DetailsView = PropertyModule.CreateDetailView(Args);
-		DetailsView->SetIsPropertyEditingEnabledDelegate(FIsPropertyEditingEnabled::CreateStatic(&FTimelineAssetEditor::CanEdit));
-		DetailsView->SetObject(TimelineAsset);
+		FDetailsViewArgs AssetDetailsArgs;
+		AssetDetailsArgs.bHideSelectionTip = true;
+		AssetDetailsArgs.bShowPropertyMatrixButton = false;
+		AssetDetailsArgs.DefaultsOnlyVisibility = EEditDefaultsOnlyNodeVisibility::Hide;
+		AssetDetailsArgs.NotifyHook = this;
+		
+		AssetDetailsView = PropertyModule.CreateDetailView(AssetDetailsArgs);
+		AssetDetailsView->SetIsPropertyEditingEnabledDelegate(FIsPropertyEditingEnabled::CreateStatic(&FTimelineAssetEditor::CanEdit));
+		AssetDetailsView->SetObject(TimelineAsset);
 	}
 
+	// TrackDetails View
+	{
+		FDetailsViewArgs TrackDetailsArgs;
+		TrackDetailsArgs.bHideSelectionTip = true;
+		TrackDetailsArgs.bShowPropertyMatrixButton = false;
+		TrackDetailsArgs.DefaultsOnlyVisibility = EEditDefaultsOnlyNodeVisibility::Show;
+		TrackDetailsArgs.NotifyHook = this;
+
+		TrackDetailsView = PropertyModule.CreateDetailView(TrackDetailsArgs);
+		TrackDetailsView->SetIsPropertyEditingEnabledDelegate(FIsPropertyEditingEnabled::CreateStatic(&FTimelineAssetEditor::CanEdit));
+	}
+	
 	// Graph
 	CreateGraphWidget();
 	// GraphEditor->OnSelectionChangedEvent.BindRaw(this, &FFlowAssetEditor::OnSelectedNodesChanged);
@@ -150,7 +194,8 @@ void FTimelineAssetEditor::CreateWidgets()
 void FTimelineAssetEditor::CreateGraphWidget()
 {
 	SAssignNew(GraphEditor, STimelineGraphEditor, SharedThis(this))
-		.DetailsView(DetailsView);
+		.AssetDetailsView(AssetDetailsView)
+		.TrackDetailsView(TrackDetailsView);
 }
 
 bool FTimelineAssetEditor::CanEdit()
@@ -158,14 +203,40 @@ bool FTimelineAssetEditor::CanEdit()
 	return GEditor->PlayWorld == nullptr;
 }
 
-TSharedRef<SDockTab> FTimelineAssetEditor::SpawnTab_Details(const FSpawnTabArgs& Args) const
+TSharedRef<SDockTab> FTimelineAssetEditor::SpawnTab_Graph(const FSpawnTabArgs& Args) const
 {
-	check(Args.GetTabId() == DetailsTab);
+	check(Args.GetTabId() == GraphTab);
+
+	TSharedRef<SDockTab> SpawnedTab = SNew(SDockTab)
+		.Label(LOCTEXT("Graph", "Graph"));
+
+	if (GraphEditor.IsValid())
+	{
+		SpawnedTab->SetContent(GraphEditor.ToSharedRef());
+	}
+
+	return SpawnedTab;
+}
+
+TSharedRef<SDockTab> FTimelineAssetEditor::SpawnTab_AssetDetails(const FSpawnTabArgs& Args) const
+{
+	check(Args.GetTabId() == AssetDetailsTab);
 
 	return SNew(SDockTab)
-		.Label(LOCTEXT("TimelineDetailsTitle", "Details"))
+		.Label(LOCTEXT("AssetDetails", "AssetDetails"))
 		[
-			DetailsView.ToSharedRef()
+			AssetDetailsView.ToSharedRef()
+		];
+}
+
+TSharedRef<SDockTab> FTimelineAssetEditor::SpawnTab_TrackDetails(const FSpawnTabArgs& Args) const
+{
+	check(Args.GetTabId() == TrackDetailsTab);
+
+	return SNew(SDockTab)
+		.Label(LOCTEXT("TrackDetails", "TrackDetails"))
+		[
+			TrackDetailsView.ToSharedRef()
 		];
 }
 

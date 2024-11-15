@@ -8,7 +8,8 @@ void STimelineGraphEditor::Construct(const FArguments& InArgs, const TSharedPtr<
 	TimelineAssetEditor = InAssetEditor;
 	TimelineAsset = TimelineAssetEditor.Pin()->GetTimelineAsset();
 
-	DetailsView = InArgs._DetailsView;
+	AssetDetailsView = InArgs._AssetDetailsView;
+	TrackDetailsView = InArgs._TrackDetailsView;
 
 	BindGraphCommands();
 	

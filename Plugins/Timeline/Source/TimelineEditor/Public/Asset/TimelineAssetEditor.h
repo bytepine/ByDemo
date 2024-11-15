@@ -12,7 +12,9 @@ class TIMELINEEDITOR_API FTimelineAssetEditor : public FAssetEditorToolkit, publ
 {
 public:
 	/**	The tab ids for all the tabs used */
-	static const FName DetailsTab;
+	static const FName GraphTab;
+	static const FName AssetDetailsTab;
+	static const FName TrackDetailsTab;
 public:
 	FTimelineAssetEditor();
 	virtual ~FTimelineAssetEditor() override;
@@ -52,12 +54,15 @@ protected:
 
 	static bool CanEdit();
 private:
-	TSharedRef<SDockTab> SpawnTab_Details(const FSpawnTabArgs& Args) const;
+	TSharedRef<SDockTab> SpawnTab_Graph(const FSpawnTabArgs& Args) const;
+	TSharedRef<SDockTab> SpawnTab_AssetDetails(const FSpawnTabArgs& Args) const;
+	TSharedRef<SDockTab> SpawnTab_TrackDetails(const FSpawnTabArgs& Args) const;
 	
 protected:
 	/** The Flow Asset being edited */
 	TObjectPtr<UTimelineAsset> TimelineAsset;
 
-	TSharedPtr<IDetailsView> DetailsView;
+	TSharedPtr<IDetailsView> AssetDetailsView;
+	TSharedPtr<IDetailsView> TrackDetailsView;
 	TSharedPtr<STimelineGraphEditor> GraphEditor;
 };

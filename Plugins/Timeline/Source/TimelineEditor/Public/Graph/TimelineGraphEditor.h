@@ -14,12 +14,14 @@ public:
 	{
 	}
 		
-	SLATE_ARGUMENT(TSharedPtr<IDetailsView>, DetailsView)
+	SLATE_ARGUMENT(TSharedPtr<IDetailsView>, AssetDetailsView)
+	SLATE_ARGUMENT(TSharedPtr<IDetailsView>, TrackDetailsView)
 	SLATE_END_ARGS()
 protected:
 	TWeakObjectPtr<UTimelineAsset> TimelineAsset;
 	
-	TSharedPtr<IDetailsView> DetailsView;
+	TSharedPtr<IDetailsView> AssetDetailsView;
+	TSharedPtr<IDetailsView> TrackDetailsView;
 	TWeakPtr<FTimelineAssetEditor> TimelineAssetEditor;
 
 	TSharedPtr<FUICommandList> CommandList;
