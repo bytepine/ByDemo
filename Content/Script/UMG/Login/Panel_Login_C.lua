@@ -12,7 +12,7 @@ function Panel_Login_C:Construct()
 end
 
 function Panel_Login_C:OnLogin()
-    UE.UGameplayStatics.OpenLevel(self, "Main", true, "")
+    UE.UGameplayStatics.OpenLevel(self, "Main")
 end
 
 function Panel_Login_C:OnOpen()

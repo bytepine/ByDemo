@@ -10,7 +10,7 @@ local GA_Jump = UnLua.Class()
 function GA_Jump:K2_ActivateAbility()
     print("GA_Jump:K2_ActivateAbility")
 
-    self:K2_CommitAbilityCooldown(false, false)
+    self:K2_CommitAbilityCooldown()
 
     local ActorInfo = self:GetActorInfo()
     ---@type ACharacter
