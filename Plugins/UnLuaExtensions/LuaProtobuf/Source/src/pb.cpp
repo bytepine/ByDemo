@@ -548,36 +548,31 @@ static int Lio_read(lua_State *L) {
     FILE *fp = stdin;
     int ret;
     if (fname == NULL)
-        (void)_setmode(_fileno(stdin), O_BINARY);
-    else
-    {
-        fopen_s(&fp, fname, "rb");
-        if (fp == NULL)
-            return luaL_fileresult(L, 0, fname);
-    }
+        (void)setmode(fileno(stdin), O_BINARY);
+    else if ((fp = fopen(fname, "rb")) == NULL)
+        return luaL_fileresult(L, 0, fname);
     lua_pushcfunction(L, io_read);
     lua_pushlightuserdata(L, fp);
     ret = lua_pcall(L, 1, 1, 0);
     if (fp != stdin) fclose(fp);
-    else (void)_setmode(_fileno(stdin), O_TEXT);
+    else (void)setmode(fileno(stdin), O_TEXT);
     if (ret != LUA_OK) { lua_pushnil(L); lua_insert(L, -2); return 2; }
     return 1;
 }
 
 static int Lio_write(lua_State *L) {
     int res;
-    (void)_setmode(_fileno(stdout), O_BINARY);
+    (void)setmode(fileno(stdout), O_BINARY);
     res = io_write(L, stdout, 1);
     fflush(stdout);
-    (void)_setmode(_fileno(stdout), O_TEXT);
+    (void)setmode(fileno(stdout), O_TEXT);
     return res;
 }
 
 static int Lio_dump(lua_State *L) {
     int res;
     const char *fname = luaL_checkstring(L, 1);
-    FILE *fp = stdin;
-    fopen_s(&fp, fname, "wb");
+    FILE *fp = fopen(fname, "wb");
     if (fp == NULL) return luaL_fileresult(L, 0, fname);
     res = io_write(L, fp, 2);
     fclose(fp);
@@ -1211,8 +1206,7 @@ static int Lpb_loadfile(lua_State *L) {
     pb_Buffer b;
     pb_Slice s;
     int ret;
-    FILE *fp = stdin;
-    fopen_s(&fp, filename, "rb");
+    FILE *fp = fopen(filename, "rb");
     if (fp == NULL)
         return luaL_fileresult(L, 0, filename);
     pb_initbuffer(&b);
