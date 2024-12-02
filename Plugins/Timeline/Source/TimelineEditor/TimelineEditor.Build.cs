@@ -23,6 +23,7 @@ public class TimelineEditor : ModuleRules
                 "Timeline",
                 "AssetTools",
                 "UnrealEd",
+                "AdvancedPreviewScene",
             }
         );
     }

@@ -4,6 +4,8 @@
 
 #include "Toolkits/AssetEditorToolkit.h"
 
+class STimelineAssetEditorViewport;
+class FEditorViewportTabContent;
 class STimelineGraphEditor;
 class UTimelineAsset;
 class IDetailsView;
@@ -15,6 +17,7 @@ public:
 	static const FName GraphTab;
 	static const FName AssetDetailsTab;
 	static const FName TrackDetailsTab;
+	static const FName ViewportTab;
 public:
 	FTimelineAssetEditor();
 	virtual ~FTimelineAssetEditor() override;
@@ -54,6 +57,7 @@ protected:
 
 	static bool CanEdit();
 private:
+	TSharedRef<SDockTab> SpawnTab_Viewport(const FSpawnTabArgs& Args) const;
 	TSharedRef<SDockTab> SpawnTab_Graph(const FSpawnTabArgs& Args) const;
 	TSharedRef<SDockTab> SpawnTab_AssetDetails(const FSpawnTabArgs& Args) const;
 	TSharedRef<SDockTab> SpawnTab_TrackDetails(const FSpawnTabArgs& Args) const;
@@ -63,6 +67,8 @@ protected:
 	TObjectPtr<UTimelineAsset> TimelineAsset;
 
 	TSharedPtr<IDetailsView> AssetDetailsView;
+	TSharedPtr<STimelineAssetEditorViewport> ViewportView;
 	TSharedPtr<IDetailsView> TrackDetailsView;
 	TSharedPtr<STimelineGraphEditor> GraphEditor;
+	TSharedPtr<FEditorViewportTabContent> ViewportTabContent;
 };
