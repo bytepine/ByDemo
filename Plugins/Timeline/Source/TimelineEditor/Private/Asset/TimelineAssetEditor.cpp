@@ -63,6 +63,7 @@ void FTimelineAssetEditor::InitTimelineAssetEditor(const EToolkitMode::Type Mode
 			(
 				FTabManager::NewStack()
 				->SetSizeCoefficient(0.4f)
+				->SetHideTabWell(true)
 				->AddTab(GraphTab, ETabState::OpenedTab)
 			)
 		)
