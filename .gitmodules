@@ -1,3 +1,6 @@
 [submodule "Plugins/FlowGraph"]
 	path = Plugins/FlowGraph
 	url = https://github.com/MothCocoon/FlowGraph.git
+[submodule "Plugins/Timeline"]
+	path = Plugins/Timeline
+	url = https://github.com/bytepine/Timeline.git
