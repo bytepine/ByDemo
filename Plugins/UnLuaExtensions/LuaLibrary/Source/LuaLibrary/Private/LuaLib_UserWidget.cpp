@@ -17,13 +17,23 @@ static int32 UUSerWidget_BubbleEvent(lua_State* L)
 		return luaL_error(L, "user widget is invalid");
 
 	TSharedPtr<SWidget> ParentWidget = UserWidget->GetCachedWidget();
-	while (ParentWidget->IsParentValid())
+    if (!ParentWidget)
+        return 0;
+
+    const int32 MaxIterations = 100; // 防止可能的死循环
+    int32 IterationCount = 0;
+    
+    while (ParentWidget->IsParentValid() && IterationCount++ < MaxIterations)
 	{
 		ParentWidget = ParentWidget->GetParentWidget();
+        if (!ParentWidget)
+            break;
 
 		if (ParentWidget->GetType() == TEXT("SObjectWidget"))
 		{
-			const TSharedPtr<SObjectWidget> ObjectWidget = StaticCastSharedPtr<SObjectWidget>(ParentWidget);
+            const TSharedPtr<SObjectWidget> ObjectWidget = StaticCastSharedPtr<SObjectWidget>(ParentWidget);
+            if (!ObjectWidget.IsValid())
+                continue;
 			UUserWidget* ParentUserWidget = ObjectWidget->GetWidgetObject();
 			if (IsValid(ParentUserWidget))
 			{
