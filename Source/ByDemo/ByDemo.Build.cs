@@ -18,8 +18,7 @@ public class ByDemo : ModuleRules
 
 		PrivateDependencyModuleNames.AddRange(new string[]
 		{
-			"UnLua",
-			"ByFramework",
+			
 		});
 
 		// Uncomment if you are using Slate UI
