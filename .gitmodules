@@ -4,3 +4,6 @@
 [submodule "Plugins/Timeline"]
 	path = Plugins/Timeline
 	url = https://github.com/bytepine/Timeline.git
+[submodule "Plugins/UnrealSharp"]
+	path = Plugins/UnrealSharp
+	url = https://github.com/UnrealSharp/UnrealSharp.git
