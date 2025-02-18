@@ -110,3 +110,6 @@ Content/Script/.idea/CopilotChatHistory.xml
 .idea/.idea.ByDemo.dir/.idea/CopilotChatHistory.xml
 .idea/.idea.ByDemo.dir/.idea/git_toolbox_blame.xml
 Content/Script/.idea/git_toolbox_blame.xml
+
+Script/*/bin/*
+Script/*/obj/*

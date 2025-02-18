@@ -1,0 +1,63 @@
+using UnrealSharp.Attributes;
+using UnrealSharp.Interop;
+
+namespace UnrealSharp.Flow;
+
+[UStruct, GeneratedType("FlowDataPinInputProperty_Rotator", "UnrealSharp.Flow.FlowDataPinInputProperty_Rotator")]
+public partial struct FFlowDataPinInputProperty_Rotator : MarshalledStruct<FFlowDataPinInputProperty_Rotator>
+{
+    // Value
+    
+    static int Value_Offset;
+    public UnrealSharp.CoreUObject.FRotator Value;
+    
+    
+    static readonly IntPtr NativeClassPtr;
+    public static IntPtr GetNativeClassPtr() => NativeClassPtr;
+    public static readonly int NativeDataSize;
+    public static int GetNativeDataSize() => NativeDataSize;
+    static FFlowDataPinInputProperty_Rotator()
+    {
+        NativeClassPtr = UCoreUObjectExporter.CallGetNativeStructFromName("FlowDataPinInputProperty_Rotator");
+        IntPtr Value_NativeProperty = FPropertyExporter.CallGetNativePropertyFromName(NativeClassPtr, "Value");
+        Value_Offset = FPropertyExporter.CallGetPropertyOffset(Value_NativeProperty);
+        NativeDataSize = UScriptStructExporter.CallGetNativeStructSize(NativeClassPtr);
+    }
+    
+    
+    public FFlowDataPinInputProperty_Rotator(IntPtr InNativeStruct)
+    {
+        unsafe
+        {
+            Value = BlittableMarshaller<UnrealSharp.CoreUObject.FRotator>.FromNative(IntPtr.Add(InNativeStruct, Value_Offset), 0);
+        }
+    }
+    
+    public static FFlowDataPinInputProperty_Rotator FromNative(IntPtr buffer) => new FFlowDataPinInputProperty_Rotator(buffer);
+    
+    public void ToNative(IntPtr buffer)
+    {
+        unsafe
+        {
+            BlittableMarshaller<UnrealSharp.CoreUObject.FRotator>.ToNative(IntPtr.Add(buffer, Value_Offset), 0, Value);
+        }
+    }
+}
+
+public static class FFlowDataPinInputProperty_RotatorMarshaller
+{
+    public static FFlowDataPinInputProperty_Rotator FromNative(IntPtr nativeBuffer, int arrayIndex)
+    {
+        return new FFlowDataPinInputProperty_Rotator(nativeBuffer + (arrayIndex * GetNativeDataSize()));
+    }
+    
+    public static void ToNative(IntPtr nativeBuffer, int arrayIndex, FFlowDataPinInputProperty_Rotator obj)
+    {
+        obj.ToNative(nativeBuffer + (arrayIndex * GetNativeDataSize()));
+    }
+    
+    public static int GetNativeDataSize()
+    {
+        return FFlowDataPinInputProperty_Rotator.NativeDataSize;
+    }
+}
