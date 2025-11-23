@@ -1,0 +1,3 @@
+[submodule "Plugins/BatchProcessor"]
+	path = Plugins/BatchProcessor
+	url = https://github.com/bytepine/BatchProcessor.git
