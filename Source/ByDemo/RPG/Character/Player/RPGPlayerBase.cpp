@@ -3,6 +3,8 @@
 
 #include "RPGPlayerBase.h"
 
+#include "Kismet/KismetMathLibrary.h"
+
 
 // Sets default values
 ARPGPlayerBase::ARPGPlayerBase()
@@ -28,5 +30,21 @@ void ARPGPlayerBase::Tick(float DeltaTime)
 void ARPGPlayerBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+void ARPGPlayerBase::InputMove(const FVector2D& Axis)
+{
+	const FRotator Rotation = GetControlRotation();
+	const FVector RightVector = UKismetMathLibrary::GetRightVector(FRotator(Rotation.Roll, 0, Rotation.Yaw));
+	AddMovementInput(RightVector, Axis.X);
+	
+	const FVector ForwardVector = UKismetMathLibrary::GetForwardVector(FRotator(0, 0, Rotation.Yaw));
+	AddMovementInput(ForwardVector, Axis.Y);
+}
+
+void ARPGPlayerBase::InputAim(const FVector2D& Axis)
+{
+	AddControllerYawInput(Axis.X);
+	AddControllerPitchInput(Axis.Y);
 }
 

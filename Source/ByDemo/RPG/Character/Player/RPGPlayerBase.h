@@ -25,4 +25,11 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
+protected:
+	UFUNCTION(BlueprintCallable)
+	void InputMove(const FVector2D& Axis);
+	
+	UFUNCTION(BlueprintCallable)
+	void InputAim(const FVector2D& Axis);
 };
