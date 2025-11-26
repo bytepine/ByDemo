@@ -6,6 +6,9 @@
 #include "ByDemo/RPG/Character/RPGCharacterBase.h"
 #include "RPGPlayerBase.generated.h"
 
+class UInputAction;
+struct FInputActionValue;
+
 UCLASS(Abstract)
 class BYDEMO_API ARPGPlayerBase : public ARPGCharacterBase
 {
@@ -27,9 +30,21 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
 protected:
-	UFUNCTION(BlueprintCallable)
-	void InputMove(const FVector2D& Axis);
+	/** Jump Input Action */
+	UPROPERTY(EditAnywhere, Category="Input")
+	UInputAction* JumpAction;
+
+	/** Move Input Action */
+	UPROPERTY(EditAnywhere, Category="Input")
+	UInputAction* MoveAction;
+
+	/** Look Input Action */
+	UPROPERTY(EditAnywhere, Category="Input")
+	UInputAction* LookAction;
 	
-	UFUNCTION(BlueprintCallable)
-	void InputAim(const FVector2D& Axis);
+	/** Called for movement input */
+	void InputMove(const FInputActionValue& Value);
+
+	/** Called for looking input */
+	void InputAim(const FInputActionValue& Value);
 };
