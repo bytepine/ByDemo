@@ -1,3 +1,6 @@
 [submodule "Plugins/BatchProcessor"]
 	path = Plugins/BatchProcessor
 	url = https://github.com/bytepine/BatchProcessor.git
+[submodule "Plugins/PropertyExtend"]
+	path = Plugins/PropertyExtend
+	url = https://github.com/bytepine/PropertyExtend.git
