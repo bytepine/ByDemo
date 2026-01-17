@@ -4,3 +4,6 @@
 [submodule "Plugins/PropertyExtend"]
 	path = Plugins/PropertyExtend
 	url = https://github.com/bytepine/PropertyExtend.git
+[submodule "Plugins/NovaUI"]
+	path = Plugins/NovaUI
+	url = https://github.com/bytepine/NovaUI.git
