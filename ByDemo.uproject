@@ -14,6 +14,10 @@
 		{
 			"Name": "ModelViewViewModel",
 			"Enabled": true
+		},
+		{
+			"Name": "NovaUI",
+			"Enabled": true
 		}
 	]
 }
