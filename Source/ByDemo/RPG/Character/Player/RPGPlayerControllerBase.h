@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "RPGPlayerControllerBase.generated.h"
 
+class UNovaUIComponent;
 class UInputMappingContext;
 class UUserWidget;
 
@@ -18,6 +19,8 @@ class BYDEMO_API ARPGPlayerControllerBase : public APlayerController
 	GENERATED_BODY()
 	
 protected:
+	ARPGPlayerControllerBase(const FObjectInitializer& ObjectInitializer);
+	
 	/** Gameplay initialization */
 	virtual void BeginPlay() override;
 	
@@ -46,4 +49,7 @@ protected:
 	/** If true, the player will use UMG touch controls even if not playing on mobile platforms */
 	UPROPERTY(EditAnywhere, Config, Category = "Input|Touch Controls")
 	bool bForceTouchControls = false;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UNovaUIComponent* NovaUIComponent;
 };

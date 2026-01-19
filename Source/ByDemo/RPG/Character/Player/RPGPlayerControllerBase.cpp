@@ -6,6 +6,13 @@
 #include "EnhancedInputSubsystems.h"
 #include "Blueprint/UserWidget.h"
 #include "Widgets/Input/SVirtualJoystick.h"
+#include "NovaUIComponent.h"
+
+ARPGPlayerControllerBase::ARPGPlayerControllerBase(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+	NovaUIComponent = CreateDefaultSubobject<UNovaUIComponent>(TEXT("NovaUIComponent"));
+}
 
 void ARPGPlayerControllerBase::BeginPlay()
 {
